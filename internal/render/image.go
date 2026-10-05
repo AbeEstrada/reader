@@ -21,7 +21,6 @@ import (
 
 	_ "golang.org/x/image/webp"
 
-	"github.com/dolmen-go/kittyimg"
 	"github.com/eliukblau/pixterm/pkg/ansimage"
 	"github.com/mattn/go-sixel"
 )
@@ -66,11 +65,7 @@ func encodeImage(img image.Image, mode ImageMode, width int) (string, error) {
 		return scaled.RenderExt(false, false), nil
 
 	case ImageModeKitty:
-		var buf bytes.Buffer
-		if err := kittyimg.Fprintln(&buf, img); err != nil {
-			return "", err
-		}
-		return buf.String(), nil
+		return encodeKitty(img, width)
 	}
 
 	return "", fmt.Errorf("cannot render images in %q mode", mode)

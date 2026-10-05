@@ -7,6 +7,8 @@ dmitri.shuralyov.com/html/belt v0.0.0-20180602232347-f7d459c86be0/go.mod h1:JLBr
 dmitri.shuralyov.com/service/change v0.0.0-20181023043359-a85b471d5412/go.mod h1:a1inKt/atXimZ4Mv927x+r7UpyzRUf4emIoiiSC2TN4=
 dmitri.shuralyov.com/state v0.0.0-20180228185332-28bcc343414c/go.mod h1:0PRwlb0D6DFvNNtx+9ybjezNCa8XF0xaYcETyp6rHWU=
 git.apache.org/thrift.git v0.0.0-20180902110319-2566ecd5d999/go.mod h1:fPE2ZNJGynbRyZ4dJvy6G277gSllfV2HJqblrnkyeyg=
+github.com/AbeEstrada/kittyimg v0.0.0-20261005031100-10700847a93f h1:YSKY0GEQWXVTEBpszAGGZyvOXBg6FnQz/0+40fuBXuU=
+github.com/AbeEstrada/kittyimg v0.0.0-20261005031100-10700847a93f/go.mod h1:2vk7ATPVcI7uW4Sh6PrSQvtO+Czmq8509xcg/y8Osd0=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/Danny-Dasilva/CycleTLS/cycletls v1.0.30 h1:MUrYvIPkb4D83p16LKt7csGjhAF2JIeCdjtzhjm7doY=
 github.com/Danny-Dasilva/CycleTLS/cycletls v1.0.30/go.mod h1:uLgl93R8am9dUvj+9pAI3pTwsmRKmFeWzz3eaN9HrQw=
@@ -88,8 +90,6 @@ github.com/dlclark/regexp2/v2 v2.7.1 h1:yqDtwI1ptXXvEUNpYTk2lad4jLtAcKqkzepn4sav
 github.com/dlclark/regexp2/v2 v2.7.1/go.mod h1:avUrQvPaLz2DrFNHJF0taWAFFX2C1GMSSoeiqFjcBmU=
 github.com/dlclark/regexp2/v2 v2.8.2 h1:uTTe+cxADL4be+dv4DZwsBIEPCQ6RHPlnVuKrtLqSx0=
 github.com/dlclark/regexp2/v2 v2.8.2/go.mod h1:avUrQvPaLz2DrFNHJF0taWAFFX2C1GMSSoeiqFjcBmU=
-github.com/dolmen-go/kittyimg v1.0.0 h1:2XWEaN7q9ProP4snh3PEyXisVgFJEm6aeIBUkVSTLRA=
-github.com/dolmen-go/kittyimg v1.0.0/go.mod h1:2vk7ATPVcI7uW4Sh6PrSQvtO+Czmq8509xcg/y8Osd0=
 github.com/dustin/go-humanize v1.0.0/go.mod h1:HtrtbFcZ19U5GC7JDqmcUSB87Iq5E25KnS6fMYU6eOk=
 github.com/eliukblau/pixterm v1.3.3 h1:kgEgMpffLlmiBNRiskDb6lLkrmK+XKOmGXqmnRL4EN4=
 github.com/eliukblau/pixterm v1.3.3/go.mod h1:xoQmNwx1i4psfnF+fM5YlEs+5Wfs0yMBFlHSAAtg+dY=

@@ -68,6 +68,14 @@ reader --image-mode sixel https://xn--gckvb8fzb.com/travel-aruba/
 
 ![sixel](sixel.png)
 
+Render images using the kitty graphics protocol, as Unicode placeholders that
+scroll with the text, even in `less -r` (not `-R`) or in tmux (with
+`set -g allow-passthrough on`):
+
+```sh
+reader -i kitty https://superhighway84.com | less -r
+```
+
 Render EML file:
 
 ```sh

@@ -56,6 +56,14 @@ func imageServer(t *testing.T, hits *atomic.Int64) *httptest.Server {
 	return server
 }
 
+func useTempKittyDir(t *testing.T) {
+	t.Helper()
+
+	dir := kittyDir
+	kittyDir = t.TempDir()
+	t.Cleanup(func() { kittyDir = dir })
+}
+
 func TestRenderWithoutImages(t *testing.T) {
 	renderer, err := New(Options{ImageMode: ImageModeNone, Width: 60})
 	if err != nil {
@@ -96,6 +104,7 @@ func TestRenderKeepsImageMarkdownInNoneMode(t *testing.T) {
 
 func TestRenderReplacesImages(t *testing.T) {
 	server := imageServer(t, nil)
+	useTempKittyDir(t)
 
 	for _, mode := range []ImageMode{ImageModeANSI, ImageModeANSIDither,
 		ImageModeKitty, ImageModeSixel} {
@@ -323,6 +332,71 @@ func TestEncodeImageUnsupportedMode(t *testing.T) {
 
 	if _, err := encodeImage(img, ImageModeNone, 40); err == nil {
 		t.Error("encoding in none mode succeeded")
+	}
+}
+
+func TestEncodeKitty(t *testing.T) {
+	useTempKittyDir(t)
+	img := image.NewRGBA(image.Rect(0, 0, 8, 8))
+
+	t.Setenv("TMUX", "")
+	out, err := encodeKitty(img, 40)
+	if err != nil {
+		t.Fatalf("encodeKitty: %v", err)
+	}
+	if !strings.HasPrefix(out, "\x1b_Ga=T,U=1,q=2,f=100,t=f,i=") {
+		t.Errorf("no virtual placement:\n%q", out)
+	}
+	if !strings.Contains(out, "\U0010EEEE") {
+		t.Errorf("no placeholders:\n%q", out)
+	}
+
+	files, err := filepath.Glob(filepath.Join(kittyDir, "reader-*"))
+	if err != nil || len(files) != 1 {
+		t.Fatalf("image files = %v (%v), want one", files, err)
+	}
+	data, err := os.ReadFile(files[0])
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := png.Decode(bytes.NewReader(data)); err != nil {
+		t.Errorf("image file is not a PNG: %v", err)
+	}
+
+	t.Setenv("TMUX", "/tmp/tmux-1000/default,1,0")
+	out, err = encodeKitty(img, 40)
+	if err != nil {
+		t.Fatalf("encodeKitty: %v", err)
+	}
+	if !strings.HasPrefix(out, "\x1bPtmux;\x1b\x1b_G") {
+		t.Errorf("no tmux passthrough:\n%q", out)
+	}
+}
+
+func TestKittySize(t *testing.T) {
+	cases := []struct {
+		name               string
+		width, height      int
+		termWidth          int
+		cellW, cellH       int
+		wantCols, wantRows int
+	}{
+		{"natural size", 100, 100, 80, 10, 20, 10, 5},
+		{"unknown cell size", 100, 100, 80, 0, 0, 10, 5},
+		{"too wide", 2000, 400, 80, 10, 20, 66, 6},
+		{"too tall", 100, 10000, 80, 10, 20, 5, 297},
+		{"narrow terminal", 100, 100, 5, 10, 20, 1, 1},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			bounds := image.Rect(0, 0, tc.width, tc.height)
+			cols, rows := kittySize(bounds, tc.termWidth, tc.cellW, tc.cellH)
+			if cols != tc.wantCols || rows != tc.wantRows {
+				t.Errorf("got %dx%d, want %dx%d",
+					cols, rows, tc.wantCols, tc.wantRows)
+			}
+		})
 	}
 }
 
